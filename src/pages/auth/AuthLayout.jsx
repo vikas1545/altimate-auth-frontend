@@ -1,9 +1,12 @@
-import React from 'react'
+import { Outlet } from 'react-router';
 
-function AuthLayout() {
+const AuthLayout = () => {
+
+  
   return (
-    <div>AuthLayout</div>
-  )
-}
-
-export default AuthLayout
+    <div>
+      <Outlet />
+    </div>
+  );
+};
+export default AuthLayout;

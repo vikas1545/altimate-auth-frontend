@@ -4,8 +4,8 @@ import CustomNav from './components/CustomNav';
 
 const Layout = () => {
     return (
-        <div><CustomNav />
-        
+        <div>
+            <CustomNav />
             <Outlet />
         </div>
     );

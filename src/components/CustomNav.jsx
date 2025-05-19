@@ -2,7 +2,7 @@ import React from 'react';
 import { Image, Layout, Menu } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
-import IMAGES from '../IMAGES';
+import Img from '../IMAGES';
 
 const { Header } = Layout;
 const AppHeader = () => {
@@ -30,7 +30,7 @@ const AppHeader = () => {
     return (
         <Layout>
             <Header style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                <div><Image src={IMAGES.logo} alt='logo' height={62} preview={false} /></div>
+                <div><Image src={Img.logo} alt='logo' height={62} preview={false} /></div>
                 <Menu
                     onClick={handleClick}
                     theme="dark"
