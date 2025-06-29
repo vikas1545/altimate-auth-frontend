@@ -9,6 +9,7 @@ import AuthLayout from '../pages/auth/AuthLayout';
 import RegisterPage from '../pages/auth/RegisterPage';
 import ResetPasswordPage from '../pages/auth/ResetPasswordPage';
 import VerifyEmailPage from '../pages/auth/VerifyEmailPage';
+import ForgetPassword from '../pages/auth/ForgetPasswordPage';
 
 function PageRoutes() {
     return (
@@ -23,7 +24,8 @@ function PageRoutes() {
                 <Route element={<AuthLayout />}>
                     <Route path='/login' element={<LoginPage />} />
                     <Route path='/register' element={<RegisterPage />} />
-                    <Route path='/forget-password' element={<ResetPasswordPage />} />
+                    <Route path='/forget-password' element={<ForgetPassword />} />
+                    <Route path='/reset-password' element={<ResetPasswordPage />} />
                     <Route path='/verify-otp' element={<VerifyEmailPage />} />
                 </Route>
                 {/* Page Not Found */}

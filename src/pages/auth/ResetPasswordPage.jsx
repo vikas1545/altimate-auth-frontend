@@ -48,7 +48,7 @@ function ResetPasswordPage() {
             <Input placeholder='example@gmail.com' />
           </Form.Item>
 
-          <Form.Item
+          {/* <Form.Item
             label="Password"
             name="password"
             rules={[{ required: true, message: 'Please input your password!' }]}
@@ -62,7 +62,7 @@ function ResetPasswordPage() {
             rules={[{ required: true, message: 'Please input your confirm password!' }]}
           >
             <Input.Password placeholder='Confirm Password' />
-          </Form.Item>
+          </Form.Item> */}
 
           <Form.Item>
             <Button type="primary" htmlType="submit" block>
