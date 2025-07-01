@@ -2,11 +2,29 @@ import { Button, Card, Flex, Form, Image, Input, Typography } from 'antd';
 import Meta from 'antd/es/card/Meta';
 import Img from '../../IMAGES';
 import { Link, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { requests } from '../agent';
+
 function RegisterPage() {
 
-  const onFinish = values => {
-    console.log('Success:', values);
+  const [form] = Form.useForm();
+  const [loading, setLoading] = useState(false)
+
+  const onFinish = async (values) => {
+    delete values["confirmPassword"];
+    
+    try {
+      setLoading(true);
+      const res = await requests.post('register', { ...values });
+      console.log('res :', res);
+
+    } catch (error) {
+      console.log('error :', error);
+    } finally {
+      setLoading(false)
+    }
   };
+
   const navigate = useNavigate()
   return (
     <div
@@ -35,30 +53,50 @@ function RegisterPage() {
           style={{ maxWidth: 600, width: '100%' }}
           initialValues={{ remember: true }}
           onFinish={onFinish}
-          autoComplete="off"
+        // autoComplete="off"
         >
+          <Form.Item
+            label="User Name"
+            name="username"
+            rules={[{ required: true, message: 'Please enter username!' }]}
+          >
+            <Input placeholder='username' />
+          </Form.Item>
+
           <Form.Item
             label="Email"
             name="email"
-            rules={[{ required: true, message: 'Please input your email!' }]}
+            rules={[{ required: true, message: 'Please enter your email!' }]}
+            hasFeedback
           >
-             <Input placeholder='example@gmail.com' />
+            <Input placeholder='example@gmail.com' />
           </Form.Item>
 
           <Form.Item
             label="Password"
             name="password"
-            rules={[{ required: true, message: 'Please input your password!' }]}
+            rules={[{ required: true, message: 'Please enter your password!' }]}
+            hasFeedback
           >
-             <Input.Password  placeholder='Password' />
+            <Input.Password placeholder='Password' />
           </Form.Item>
 
           <Form.Item
             label="Confirm Password"
             name="confirmPassword"
-            rules={[{ required: true, message: 'Please input your confirm password!' }]}
+            rules={[{ required: true, message: 'Please enter your confirm password!' },
+
+            ({ getFieldValue }) => ({
+              validator(_, value) {
+                if (!value || getFieldValue('password') === value) {
+                  return Promise.resolve();
+                }
+                return Promise.reject(new Error('The two passwords do not match!'));
+              },
+            }),
+            ]}
           >
-           <Input.Password  placeholder='Confirm Password' />
+            <Input.Password placeholder='Confirm Password' />
           </Form.Item>
 
           <Form.Item>
@@ -68,7 +106,7 @@ function RegisterPage() {
           </Form.Item>
 
           <Form.Item>
-            <Button type="primary" htmlType="submit" block>
+            <Button type="primary" htmlType="submit" block loading={loading}>
               Submit
             </Button>
           </Form.Item>

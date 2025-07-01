@@ -1,13 +1,37 @@
-import { Button, Card, Checkbox, Flex, Form, Image, Input, Typography } from 'antd';
+import { Button, Card, Checkbox, Flex, Form, Image, Input, notification, Typography } from 'antd';
 import Meta from 'antd/es/card/Meta';
 import Img from '../../IMAGES';
 import { Link, useNavigate } from 'react-router-dom';
+import { useContext, useState } from 'react';
+import { requests } from '../agent';
+import { AuthContext } from '../../context/AuthContext';
 function LoginPage() {
-  const navigate = useNavigate()
-  const onFinish = values => {
-    console.log('Success:', values);
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false)
+
+  const { loginHandler, isLoggedIn } = useContext(AuthContext);
+
+  const onFinish = async (values) => {
+    try {
+      setLoading(true);
+      const res = await requests.post('login', { ...values });
+
+      if (!res.error && res.data.length === 2) {
+        const loginInfo = { token: res.data[0], refreshToken: res.data[1], isLoggedIn: true }
+        localStorage.setItem('loginInfo', JSON.stringify(loginInfo))
+        notification.success({ message: res.message || 'Logged in Successfully' })
+        loginHandler(res.data)
+        navigate('/')
+      }
+
+    } catch (error) {
+      notification.error({ message: 'Failed to logged in' })
+    } finally {
+      setLoading(false)
+    }
   };
 
+  console.log('isLoggedIn test :', isLoggedIn)
   return (
     <div
       style={{
@@ -49,6 +73,7 @@ function LoginPage() {
             label="Password"
             name="password"
             rules={[{ required: true, message: 'Please input your password!' }]}
+            help="Password must be of at least 6 characters"
           >
             <Input.Password placeholder='Password' />
           </Form.Item>
@@ -66,7 +91,7 @@ function LoginPage() {
 
 
           <Form.Item>
-            <Button type="primary" htmlType="submit" block>
+            <Button type="primary" htmlType="submit" block loading={loading}>
               Submit
             </Button>
           </Form.Item>

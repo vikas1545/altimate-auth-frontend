@@ -1,13 +1,7 @@
 import { Flex, Layout, notification, theme } from 'antd';
 import React, { useEffect } from 'react'
 import { requests } from './agent';
-const contentStyle = {
-  textAlign: 'center',
-  minHeight: 120,
-  lineHeight: '120px',
-  color: '#fff',
-  backgroundColor: '#0958d9',
-};
+
 const { Content } = Layout;
 function HomePage() {
   const {
@@ -16,9 +10,7 @@ function HomePage() {
 
 const getData = async()=>{
   try {
-    const res= await requests.get('users');
-   
-           
+    const res= await requests.get('user');
   } catch (error) {
      notification.error({message:'Something is wrong'})
   }

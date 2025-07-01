@@ -1,15 +1,42 @@
-import React from 'react';
-import { Image, Layout, Menu } from 'antd';
+import React, { useContext, useState } from 'react';
+import { Image, Layout, Menu, notification } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import Img from '../IMAGES';
+import { requests } from '../pages/agent';
+import { AuthContext } from '../context/AuthContext';
 
 const { Header } = Layout;
 const AppHeader = () => {
     const navigate = useNavigate();
-    const handleClick = (e) => {
+    const [loading, setLoading] = useState(false)
+    const {logoutHandler,isLoggedIn,token}=useContext(AuthContext);
+
+    console.log('isLoggedIn main :',isLoggedIn)
+    console.log('token main :',token)
+    const handleLogout = async () => {
+        try {
+            const res = await requests.post('logout', {});
+            console.log('res logout :', res)
+            if (!res.error) {
+                notification.success({ message: res.message || 'Logged out' })
+            }
+
+        } catch (error) {
+            notification.error({ message: 'Failed to logged out' })
+        }
+        finally {
+            setLoading(false)
+        }
+    }
+
+    const handleClick = async (e) => {
         console.log('Clicked menu item:', e.key);
         // Add navigation logic here
+        if (e.key === 'logout') {
+            await handleLogout()
+            return
+        }
         navigate(`/${e.key}`)
     };
 

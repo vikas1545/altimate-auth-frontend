@@ -12,36 +12,35 @@ axios.interceptors.request.use(
 
 axios.interceptors.response.use(
   async (response) => {
-    return response.data;  // no await needed
+    return response?.data;
   },
   async (error) => {
     const response = error.response;
     if (response) {
-      console.error('status Code :', response.status);
-      console.error('reason', response.data.status);
-      console.error('message:', response.status, response.data.message);
+      const { status, error, message, details } = response.data;
 
-      switch (response.status) {
+      switch (status) {
         case 401:
-          notification.error({ message: response.data.status || "Unathorized", description: response.data?.message || "Login again" });
+          notification.error({ message: error || "Unathorized", description: message || "Login again" });
           return
         case 404:
-          notification.error({ message: response.data.status || "404", description: response.data?.message || "Not Found" })
+          notification.error({ message: error || "404", description: message || "Not Found" })
           return
         case 403:
-          notification.error({ message: response.data.status || "403", description: response.data?.message || "Access denied" })
+          notification.error({ message: error || "403", description: message || "Access denied" })
           return
         case 429:
-          notification.error({ message: response.data.status || "429", description: response.data?.message || "Limit Exceeded" })
+          notification.error({ message: error || "429", description: details || "Limit Exceeded" })
           return
         default:
-          notification.error({ message: 'Something is wrong' })
-          break
+          notification.error({ message: message || 'Something is wrong' })
+          return
+         // break
       }
-      throw response.data || response;
+      
+      //throw response.data || response;
 
     } else {
-      console.error('Network or CORS error:', error.message);
       throw error;
     }
   }
@@ -53,7 +52,16 @@ export const requests = {
       const response = await axios.get(url, { params });
       return response;
     } catch (error) {
-      console.error('Request failed:', error);
+      throw error;
+    }
+  },
+
+  post: async (url, payload) => {
+    try {
+      const response = await axios.post(url, payload);
+      console.log('response info:', response)
+      return response;
+    } catch (error) {
       throw error;
     }
   },
