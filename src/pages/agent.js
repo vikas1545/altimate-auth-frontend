@@ -4,9 +4,16 @@ axios.defaults.baseURL = import.meta.env.VITE_BASE_APP_URL;
 axios.defaults.withCredentials = true;
 
 axios.interceptors.request.use(
-  async (config) => config,
+  async (config) => {
+    const loginInfo = JSON.parse(localStorage.getItem('loginInfo'));
+
+    if (loginInfo) {
+      config.headers.Authorization = `Bearer ${loginInfo?.token}`
+    }
+    return config
+  },
   async (error) => {
-    throw error;  // throw instead of Promise.reject
+    throw error;
   }
 );
 
@@ -35,9 +42,9 @@ axios.interceptors.response.use(
         default:
           notification.error({ message: message || 'Something is wrong' })
           return
-         // break
+        // break
       }
-      
+
       //throw response.data || response;
 
     } else {

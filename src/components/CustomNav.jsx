@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
-import { Image, Layout, Menu, notification } from 'antd';
-import { UserOutlined } from '@ant-design/icons';
+import { Avatar, Image, Layout, Menu, notification } from 'antd';
+import { LoginOutlined, LogoutOutlined, ProfileOutlined, UserOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import Img from '../IMAGES';
 import { requests } from '../pages/agent';
@@ -10,15 +10,13 @@ const { Header } = Layout;
 const AppHeader = () => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false)
-    const {logoutHandler,isLoggedIn,token}=useContext(AuthContext);
+    const { logoutHandler, isLoggedIn, token } = useContext(AuthContext);
 
-    console.log('isLoggedIn main :',isLoggedIn)
-    console.log('token main :',token)
     const handleLogout = async () => {
         try {
             const res = await requests.post('logout', {});
-            console.log('res logout :', res)
             if (!res.error) {
+                logoutHandler()
                 notification.success({ message: res.message || 'Logged out' })
             }
 
@@ -40,17 +38,22 @@ const AppHeader = () => {
         navigate(`/${e.key}`)
     };
 
+    const optsArr = [];
+    if (isLoggedIn) {
+        optsArr.push({ label: 'Logout', key: 'logout', icon: <Avatar style={{ backgroundColor: 'rgb(208 204 202)', }} icon={<LogoutOutlined />} /> })
+        optsArr.push({ label: 'Profile', key: 'user-profile', icon: <Avatar style={{ backgroundColor: 'rgb(208 204 202)', }} icon={<ProfileOutlined />} /> })
+    } else {
+        optsArr.push({ label: 'Login', key: 'login', icon: <Avatar style={{ backgroundColor: 'rgb(208 204 202)', }} icon={<LoginOutlined />} /> })
+    }
+
     const menuItems = [
         { label: 'Home', key: 'home' },
         { label: 'About', key: 'about' },
         {
-            label: 'Profile',
-            key: 'profile',
-            icon: <UserOutlined />,
-            children: [
-                { label: 'Login', key: 'login' },
-                { label: 'Logout', key: 'logout' },
-            ],
+            label: '',
+            key: 'avtar',
+            icon: <Avatar style={{ backgroundColor: '#fde3cf', color: '#f56a00' }} size={50} icon={<UserOutlined />} />,
+            children: optsArr
         },
     ];
 

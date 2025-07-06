@@ -6,9 +6,15 @@ import Img from '../../IMAGES';
 import { Link, useNavigate } from 'react-router-dom';
 
 function ResetPasswordPage() {
-
+  const [form] = Form.useForm()
   const onFinish = values => {
     console.log('Success:', values);
+    if (values.password !== values.confirmPassword) {
+      form.setFields([{ name: 'confirmPassword', errors: ['Password and Confirm Password mismatching !'] }])
+      return
+    }
+    values['confirmPassword'] = values['password'];
+    delete values['password'];
   };
   const navigate = useNavigate()
   return (
@@ -39,16 +45,17 @@ function ResetPasswordPage() {
           initialValues={{ remember: true }}
           onFinish={onFinish}
           autoComplete="off"
+          form={form}
         >
-          <Form.Item
+          {/* <Form.Item
             label="Email"
             name="email"
             rules={[{ required: true, message: 'Please input your email!' }]}
           >
             <Input placeholder='example@gmail.com' />
-          </Form.Item>
+          </Form.Item> */}
 
-          {/* <Form.Item
+          <Form.Item
             label="Password"
             name="password"
             rules={[{ required: true, message: 'Please input your password!' }]}
@@ -62,7 +69,7 @@ function ResetPasswordPage() {
             rules={[{ required: true, message: 'Please input your confirm password!' }]}
           >
             <Input.Password placeholder='Confirm Password' />
-          </Form.Item> */}
+          </Form.Item>
 
           <Form.Item>
             <Button type="primary" htmlType="submit" block>
@@ -70,10 +77,6 @@ function ResetPasswordPage() {
             </Button>
           </Form.Item>
         </Form>
-        <Flex justify='center' gap={4}>
-          <Typography.Title level={5} type='secondary'>Already have an account ? </Typography.Title>
-          <Link to='/login'>Sign In</Link>
-        </Flex>
 
       </Card>
 

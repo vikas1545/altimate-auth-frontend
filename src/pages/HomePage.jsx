@@ -8,21 +8,20 @@ function HomePage() {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
 
-const getData = async()=>{
-  try {
-    const res= await requests.get('user');
-  } catch (error) {
-     notification.error({message:'Something is wrong'})
-  }
+// const getData = async()=>{
+//   try {
+//     const res= await requests.get('user');
+//   } catch (error) {
+//      notification.error({message:'Something is wrong'})
+//   }
 
-}
+// }
 
-useEffect(()=>{
-  getData()
-})
+// useEffect(()=>{
+//   getData()
+// })
 
   return (
-    // <div>HomePage</div>
     <Layout style={{ padding: '0 24px 24px', marginTop: '20px' }}>
 
       <Content

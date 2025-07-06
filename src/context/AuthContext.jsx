@@ -10,6 +10,7 @@ export const AuthProvider = ({ children }) => {
     const [isLoggedIn, setIsLoaggedIn] = useState(loginInfo?.isLoggedIn || false);
 
     const logoutHandler = () => {
+        localStorage.removeItem('loginInfo')
         setToken('')
         setRefreshToken('')
         setIsLoaggedIn(false)

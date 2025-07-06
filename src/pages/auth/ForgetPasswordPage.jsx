@@ -33,7 +33,7 @@ function ForgetPassword() {
         hoverable
         style={{ width: 600, cursor: 'default' }}
       >
-        <Meta title="Reset Password" description="Altimate Authentication" />
+        <Meta title="Forget Password" description="Altimate Authentication" />
         <Flex justify='center'><Image src={Img.logo} alt='logo' height={62} preview={false} /></Flex>
 
         <Form
@@ -45,13 +45,13 @@ function ForgetPassword() {
           form={form}
           autoComplete="off"
         >
-          {/* <Form.Item
+          <Form.Item
             label="Email"
             name="email"
             rules={[{ required: true, message: 'Please input your email!' }]}
           >
             <Input placeholder='example@gmail.com' />
-          </Form.Item> */}
+          </Form.Item>
 
           <Form.Item
             label="Password"
