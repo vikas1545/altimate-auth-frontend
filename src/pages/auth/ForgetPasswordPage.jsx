@@ -1,21 +1,35 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { Button, Card, Flex, Form, Image, Input, Typography } from 'antd';
+import { Button, Card, Flex, Form, Image, Input, notification, Typography } from 'antd';
 import Meta from 'antd/es/card/Meta';
 import Img from '../../IMAGES';
+import { requests } from '../agent';
+
 function ForgetPassword() {
-  const [searchParam] = useSearchParams();
-  console.log('searchParam :', searchParam.get('token'))
+  const [loading, setLoading] = useState(false)
   const [form] = Form.useForm()
 
-  const onFinish = values => {
-    if (values.password !== values.confirmPassword) {
-      form.setFields([{ name: 'confirmPassword', errors: ['Password and Confirm Password mismatching !'] }])
-      return
+  const onFinish = async (values) => {
+    // if (values.password !== values.confirmPassword) {
+    //   form.setFields([{ name: 'confirmPassword', errors: ['Password and Confirm Password mismatching !'] }])
+    //   return
+    // }
+    // values['confirmPassword'] = values['password'];
+    // delete values['password'];
+
+    try {
+      setLoading(true)
+      const res = await requests.post('/forget-password', { ...values })
+      console.log('res for pass :',res)
+      if(!res.error){
+        notification.success({message:res.message})
+      }
+    } catch (error) {
+      notification.error({ message: 'Failed to send reset password link' })
+    } finally {
+      setLoading(false)
     }
-    values['confirmPassword'] = values['password'];
-    delete values['password'];
-    values.token = searchParam.get('token')
+
   };
 
   return (
@@ -32,6 +46,7 @@ function ForgetPassword() {
       <Card
         hoverable
         style={{ width: 600, cursor: 'default' }}
+        loading={loading}
       >
         <Meta title="Forget Password" description="Altimate Authentication" />
         <Flex justify='center'><Image src={Img.logo} alt='logo' height={62} preview={false} /></Flex>
@@ -53,7 +68,7 @@ function ForgetPassword() {
             <Input placeholder='example@gmail.com' />
           </Form.Item>
 
-          <Form.Item
+          {/* <Form.Item
             label="Password"
             name="password"
             rules={[{ required: true, message: 'Please input your password!' }]}
@@ -67,7 +82,7 @@ function ForgetPassword() {
             rules={[{ required: true, message: 'Please input your confirm password!' }]}
           >
             <Input.Password placeholder='Confirm Password' />
-          </Form.Item>
+          </Form.Item> */}
 
           <Form.Item>
             <Button type="primary" htmlType="submit" block>

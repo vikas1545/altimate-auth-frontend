@@ -18,6 +18,7 @@ const AppHeader = () => {
             if (!res.error) {
                 logoutHandler()
                 notification.success({ message: res.message || 'Logged out' })
+                navigate('/login',{replace:true})
             }
 
         } catch (error) {

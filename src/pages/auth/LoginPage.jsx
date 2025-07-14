@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useContext, useState } from 'react';
 import { requests } from '../agent';
 import { AuthContext } from '../../context/AuthContext';
+
 function LoginPage() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false)

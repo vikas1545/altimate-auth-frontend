@@ -21,6 +21,7 @@ function PageRoutes() {
                 <Route path='/login' element={<LoginPage />} />
                 <Route path='/register' element={<RegisterPage />} />
                 <Route path='/forget-password' element={<ForgetPassword />} />
+                <Route path='/reset-password' element={<ResetPasswordPage />} />
                 <Route element={<Layout />}>
                     <Route path='/' element={<HomePage />} />
                     <Route path='/home' element={<HomePage />} />
@@ -28,7 +29,6 @@ function PageRoutes() {
                 </Route>
 
                 <Route element={<AuthLayout />}>
-                    <Route path='/reset-password' element={<ResetPasswordPage />} />
                     <Route path='/verify-otp' element={<VerifyEmailPage />} />
                     <Route path='/user-profile' element={<UserProfile />} />
                     <Route path='/all-Users' element={<AllUsersProfile />} />

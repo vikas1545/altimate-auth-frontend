@@ -85,7 +85,7 @@ function UserProfile() {
                         name="username"
                         rules={[{ required: true, message: 'Please enter your username!' }]}
                     >
-                        <Input placeholder='username' />
+                        <Input placeholder='username' readOnly />
                     </Form.Item>
 
                     <Form.Item
@@ -142,8 +142,9 @@ function UserProfile() {
 
 
                     <Form.Item>
-                        <Button type="link" htmlType="button" role='link' danger style={{ float: 'right' }}>
-                            <Link to='/reset-password'>Change Password</Link>
+                        <Button type="link" htmlType="button" role='link' danger style={{ float: 'right' }} 
+                        onClick={()=>navigate('/reset-password',{state:userDetails?.email})}>
+                            Change Password
                         </Button>
                         <Button type="primary" htmlType="submit" block loading={loading}>
                             Submit
